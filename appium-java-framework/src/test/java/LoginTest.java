@@ -10,9 +10,14 @@ import java.io.File;
 import java.net.URL;
 import java.time.Duration;
 
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.By;
+
 public class LoginTest {
 
     private AndroidDriver driver;
+    private WebDriverWait wait;
 
     @BeforeMethod
     public void setUp() throws Exception {
@@ -24,17 +29,22 @@ public class LoginTest {
         options.setCapability("appium:appWaitActivity", "*");
 
         driver = new AndroidDriver(new URL("http://127.0.0.1:4723"), options);
+        wait = new WebDriverWait(driver, Duration.ofSeconds(10));
     }
 
     @Test
-    public void loginExitoso() throws InterruptedException {
+    public void loginExitoso() {
         // 1. Tap en menú hamburguesa
         driver.findElement(AppiumBy.accessibilityId("View menu")).click();
-        Thread.sleep(1000);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(
+                AppiumBy.accessibilityId("Login Menu Item")
+        ));
 
         // 2. Tap en "Log In" dentro del menú
         driver.findElement(AppiumBy.accessibilityId("Login Menu Item")).click();
-        Thread.sleep(1000);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(
+                AppiumBy.id("com.saucelabs.mydemoapp.android:id/nameET")
+        ));
 
         // 3. Ingresar username
         driver.findElement(AppiumBy.id("com.saucelabs.mydemoapp.android:id/nameET")).sendKeys("bod@example.com");
@@ -46,7 +56,9 @@ public class LoginTest {
         driver.findElement(AppiumBy.accessibilityId("Tap to login with given credentials")).click();
 
         // 6. Esperar que cargue Products
-        Thread.sleep(3000);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(
+                AppiumBy.accessibilityId("title")
+        ));
 
         // 7. Verificar que volvió a Products
         String titulo = driver.findElement(AppiumBy.accessibilityId("title")).getText();
@@ -55,7 +67,7 @@ public class LoginTest {
     }
 
     @Test
-    public void scrollHastaProducto() throws InterruptedException {
+    public void scrollHastaProducto() {
         // Scroll hasta un producto que no está visible
         driver.findElement(AppiumBy.androidUIAutomator(
                 "new UiScrollable(new UiSelector().scrollable(true))" +
@@ -71,12 +83,16 @@ public class LoginTest {
     }
 
     @Test
-    public void loginConClearYReingreso() throws InterruptedException {
+    public void loginConClearYReingreso() {
         // 1. Ir al login
         driver.findElement(AppiumBy.accessibilityId("View menu")).click();
-        Thread.sleep(1000);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(
+                AppiumBy.accessibilityId("Login Menu Item")
+        ));
         driver.findElement(AppiumBy.accessibilityId("Login Menu Item")).click();
-        Thread.sleep(1000);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(
+                AppiumBy.id("com.saucelabs.mydemoapp.android:id/nameET")
+        ));
 
         // 2. Ingresar username incorrecto
         driver.findElement(AppiumBy.id("com.saucelabs.mydemoapp.android:id/nameET")).sendKeys("usuario_equivocado");
@@ -90,18 +106,26 @@ public class LoginTest {
         driver.findElement(AppiumBy.accessibilityId("Tap to login with given credentials")).click();
 
         // 5. Verificar
-        Thread.sleep(3000);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(
+                AppiumBy.accessibilityId("title")
+        ));
+
         String titulo = driver.findElement(AppiumBy.accessibilityId("title")).getText();
         Assert.assertEquals(titulo, "Products");
     }
 
     @Test
-    public void loginConCamposVacios() throws InterruptedException {
+    public void loginConCamposVacios() {
         // 1. Ir al login
         driver.findElement(AppiumBy.accessibilityId("View menu")).click();
-        Thread.sleep(1000);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(
+                AppiumBy.accessibilityId("Login Menu Item")
+        ));
+
         driver.findElement(AppiumBy.accessibilityId("Login Menu Item")).click();
-        Thread.sleep(1000);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(
+                AppiumBy.id("com.saucelabs.mydemoapp.android:id/nameET")
+        ));
 
         // 2. Tap en Login sin ingresar nada
         driver.findElement(AppiumBy.accessibilityId("Tap to login with given credentials")).click();
