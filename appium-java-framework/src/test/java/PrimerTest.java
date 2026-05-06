@@ -15,18 +15,14 @@ public class PrimerTest {
 	
 	@BeforeMethod
 	public void setUp() throws Exception {
-    UiAutomator2Options options = new UiAutomator2Options();
-    options.setDeviceName("emulator-5554");
-    options.setApp(new File("apk/mda-2.2.0-25.apk").getAbsolutePath());
-    options.setAutomationName("UiAutomator2");
-    options.setNewCommandTimeout(Duration.ofSeconds(120));
-    
-    // Timeouts extendidos para equipos con poca RAM
-    options.setCapability("appium:uiautomator2ServerInstallTimeout", 120000);
-    options.setCapability("appium:uiautomator2ServerLaunchTimeout", 120000);
-    options.setCapability("appium:adbExecTimeout", 120000);
+        UiAutomator2Options options = new UiAutomator2Options();
+        options.setUdid("ZY32FJFXNF");
+        options.setCapability("appium:appWaitActivity", "*");
+        options.setApp(new File("apk/mda-2.2.0-25.apk").getAbsolutePath());
+        options.setAutomationName("UiAutomator2");
+        options.setNewCommandTimeout(Duration.ofSeconds(120));
 
-    driver = new AndroidDriver(new URL("http://127.0.0.1:4723"), options);
+        driver = new AndroidDriver(new URL("http://127.0.0.1:4723"), options);
 	}
 
     @Test
