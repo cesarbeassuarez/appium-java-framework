@@ -2,6 +2,7 @@ package pages;
 
 import io.appium.java_client.AppiumBy;
 import io.appium.java_client.android.AndroidDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -46,5 +47,29 @@ public class ProductsPage extends BasePage {
         return driver.findElement(AppiumBy.androidUIAutomator(
                 "new UiSelector().text(\"" + nombreProducto + "\")"
         )).getText();
+    }
+
+    public ProductDetailPage seleccionarProducto(String nombreProducto) {
+        // Scroll hasta el producto
+        wait.until(ExpectedConditions.visibilityOfElementLocated(
+                AppiumBy.androidUIAutomator(
+                        "new UiScrollable(new UiSelector().scrollable(true))" +
+                                ".scrollIntoView(new UiSelector().text(\"" + nombreProducto + "\"))"
+                )
+        ));
+
+        // Click en la imagen del producto (el texto no es clickable)
+        driver.findElement(AppiumBy.xpath(
+                "//android.widget.TextView[@text='" + nombreProducto + "']" +
+                        "/parent::android.view.ViewGroup" +
+                        "/android.widget.ImageView[@content-desc='Product Image']"
+        )).click();
+
+        // Esperar a que cargue Product Detail
+        wait.until(ExpectedConditions.visibilityOfElementLocated(
+                AppiumBy.accessibilityId("Tap to add product to cart")
+        ));
+
+        return new ProductDetailPage(driver, wait);
     }
 }
