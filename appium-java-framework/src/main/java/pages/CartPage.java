@@ -59,4 +59,12 @@ public class CartPage extends BasePage {
                 AppiumBy.id(NO_ITEMS_TITLE)
         )).getText();
     }
+
+    public CheckoutShippingPage proceedToCheckout() {
+        driver.findElement(AppiumBy.accessibilityId(PROCEED_CHECKOUT_ACC)).click();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(
+                AppiumBy.id("com.saucelabs.mydemoapp.android:id/fullNameET")
+        ));
+        return new CheckoutShippingPage(driver, wait);
+    }
 }

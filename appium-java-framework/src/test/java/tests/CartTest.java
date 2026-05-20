@@ -54,7 +54,6 @@ public class CartTest {
         Assert.assertEquals(cartPage.obtenerTotalItems(), "1 Items");
         Assert.assertEquals(cartPage.obtenerTotalPrecio(), "$ 29.99");
     }
-
     @Test
     public void eliminarProductoDelCarrito() {
         ProductDetailPage detailPage = productsPage.seleccionarProducto("Sauce Labs Backpack");
@@ -66,7 +65,6 @@ public class CartTest {
         cartPage.eliminarProducto();
         Assert.assertEquals(cartPage.obtenerTituloCarritoVacio(), "No Items");
     }
-
     @Test
     public void verificarCantidadMultipleEnCarrito() {
         ProductDetailPage detailPage = productsPage.seleccionarProducto("Sauce Labs Backpack");
@@ -94,5 +92,4 @@ public class CartTest {
         Assert.assertEquals(cartPage.obtenerTotalItems(), "2 Items");
         Assert.assertEquals(cartPage.obtenerTotalPrecio(), "$ 59.98");
     }
-
 }
