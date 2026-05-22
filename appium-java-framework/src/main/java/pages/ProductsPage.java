@@ -6,12 +6,17 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.time.Duration;
+
+
 public class ProductsPage extends BasePage {
 
     // Locators
     private static final String MENU_HAMBURGUESA = "View menu";
     private static final String LOGIN_MENU_ITEM = "Login Menu Item";
     private static final String TITULO = "title";
+
+    private static final String MENU_ITEM_ID = "com.saucelabs.mydemoapp.android:id/itemTV";
 
     public ProductsPage(AndroidDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -71,5 +76,37 @@ public class ProductsPage extends BasePage {
         ));
 
         return new ProductDetailPage(driver, wait);
+    }
+
+
+    public void abrirMenu() {
+        driver.findElement(AppiumBy.accessibilityId(MENU_HAMBURGUESA)).click();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(
+                AppiumBy.id(MENU_ITEM_ID)
+        ));
+    }
+
+    public DrawingPage irADrawing() {
+        abrirMenu();
+        driver.findElements(AppiumBy.id(MENU_ITEM_ID)).stream()
+                .filter(e -> e.getText().equals("Drawing"))
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("No se encontró 'Drawing' en el menú"))
+                .click();
+
+        // Manejar permiso si aparece ANTES de esperar drawingTV
+        try {
+            WebDriverWait shortWait = new WebDriverWait(driver, Duration.ofSeconds(3));
+            shortWait.until(ExpectedConditions.visibilityOfElementLocated(
+                    AppiumBy.id("com.android.permissioncontroller:id/permission_allow_button")
+            )).click();
+        } catch (Exception e) {
+            // Permiso ya otorgado, no aparece
+        }
+
+        wait.until(ExpectedConditions.visibilityOfElementLocated(
+                AppiumBy.id("com.saucelabs.mydemoapp.android:id/drawingTV")
+        ));
+        return new DrawingPage(driver, wait);
     }
 }
