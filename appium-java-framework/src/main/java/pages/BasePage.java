@@ -1,6 +1,8 @@
 package pages;
 
+import io.appium.java_client.AppiumBy;
 import io.appium.java_client.android.AndroidDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import org.openqa.selenium.interactions.PointerInput;
@@ -30,5 +32,24 @@ public class BasePage {
         swipe.addAction(finger.createPointerUp(PointerInput.MouseButton.LEFT.asArg()));
 
         driver.perform(Arrays.asList(swipe));
+    }
+
+    /**
+     * Maneja diálogo de permisos del sistema Android.
+     * Si el diálogo aparece, toca el botón indicado.
+     * Si no aparece (permiso ya otorgado), continúa sin error.
+     */
+    public void manejarPermiso(String... botonesPermiso) {
+        WebDriverWait shortWait = new WebDriverWait(driver, Duration.ofSeconds(3));
+        for (String boton : botonesPermiso) {
+            try {
+                shortWait.until(ExpectedConditions.visibilityOfElementLocated(
+                        AppiumBy.id(boton)
+                )).click();
+                return;
+            } catch (Exception e) {
+                // Este botón no apareció, probar el siguiente
+            }
+        }
     }
 }

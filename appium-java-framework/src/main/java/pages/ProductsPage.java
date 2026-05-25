@@ -8,6 +8,9 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 
+import pages.QRScannerPage;
+import pages.GeoLocationPage;
+
 
 public class ProductsPage extends BasePage {
 
@@ -17,6 +20,11 @@ public class ProductsPage extends BasePage {
     private static final String TITULO = "title";
 
     private static final String MENU_ITEM_ID = "com.saucelabs.mydemoapp.android:id/itemTV";
+
+    // Constante para el botón de permiso "Mientras la app está en uso"
+    private static final String PERMISO_ALLOW = "com.android.permissioncontroller:id/permission_allow_foreground_only_button";
+    private static final String PERMISO_DENY = "com.android.permissioncontroller:id/permission_deny_button";
+
 
     public ProductsPage(AndroidDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -94,19 +102,60 @@ public class ProductsPage extends BasePage {
                 .orElseThrow(() -> new RuntimeException("No se encontró 'Drawing' en el menú"))
                 .click();
 
-        // Manejar permiso si aparece ANTES de esperar drawingTV
-        try {
-            WebDriverWait shortWait = new WebDriverWait(driver, Duration.ofSeconds(3));
-            shortWait.until(ExpectedConditions.visibilityOfElementLocated(
-                    AppiumBy.id("com.android.permissioncontroller:id/permission_allow_button")
-            )).click();
-        } catch (Exception e) {
-            // Permiso ya otorgado, no aparece
-        }
+        // irADrawing — prueba ambos ids
+        manejarPermiso(PERMISO_ALLOW, "com.android.permissioncontroller:id/permission_allow_button");
 
         wait.until(ExpectedConditions.visibilityOfElementLocated(
                 AppiumBy.id("com.saucelabs.mydemoapp.android:id/drawingTV")
         ));
         return new DrawingPage(driver, wait);
+    }
+
+    public QRScannerPage irAQRScanner() {
+        abrirMenu();
+        driver.findElements(AppiumBy.id(MENU_ITEM_ID)).stream()
+                .filter(e -> e.getText().equals("QR Code Scanner"))
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("No se encontró 'QR Code Scanner' en el menú"))
+                .click();
+
+        manejarPermiso(PERMISO_ALLOW);
+
+        wait.until(ExpectedConditions.visibilityOfElementLocated(
+                AppiumBy.id("com.saucelabs.mydemoapp.android:id/qrCodeTV")
+        ));
+        return new QRScannerPage(driver, wait);
+    }
+
+    public QRScannerPage irAQRScannerDenegando() {
+        abrirMenu();
+        driver.findElements(AppiumBy.id(MENU_ITEM_ID)).stream()
+                .filter(e -> e.getText().equals("QR Code Scanner"))
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("No se encontró 'QR Code Scanner' en el menú"))
+                .click();
+
+        manejarPermiso(PERMISO_DENY);
+
+        wait.until(ExpectedConditions.visibilityOfElementLocated(
+                AppiumBy.id("com.saucelabs.mydemoapp.android:id/qrCodeTV")
+        ));
+        return new QRScannerPage(driver, wait);
+    }
+
+    public GeoLocationPage irAGeoLocation() {
+        abrirMenu();
+        driver.findElements(AppiumBy.id(MENU_ITEM_ID)).stream()
+                .filter(e -> e.getText().equals("Geo Location"))
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("No se encontró 'Geo Location' en el menú"))
+                .click();
+
+        manejarPermiso(PERMISO_ALLOW);
+
+        wait.until(ExpectedConditions.visibilityOfElementLocated(
+                AppiumBy.id("com.saucelabs.mydemoapp.android:id/locationTV")
+        ));
+        return new GeoLocationPage(driver, wait);
     }
 }

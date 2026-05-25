@@ -1,45 +1,11 @@
 package tests;
 
-import io.appium.java_client.android.AndroidDriver;
-import io.appium.java_client.android.options.UiAutomator2Options;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
+
 import org.testng.annotations.Test;
 import pages.*;
 
-import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.time.Duration;
-
-public class CheckoutTest {
-
-    private AndroidDriver driver;
-    private WebDriverWait wait;
-    private ProductsPage productsPage;
-
-    @BeforeMethod
-    public void setUp() throws MalformedURLException {
-        UiAutomator2Options options = new UiAutomator2Options();
-        options.setApp(new File("apk/mda-2.2.0-25.apk").getAbsolutePath());
-        options.setAutomationName("UiAutomator2");
-        options.setAutoGrantPermissions(true);
-        options.setNewCommandTimeout(Duration.ofSeconds(120));
-        options.setCapability("appium:appWaitActivity", "*");
-
-        driver = new AndroidDriver(new URL("http://127.0.0.1:4723"), options);
-        wait = new WebDriverWait(driver, Duration.ofSeconds(15));
-        productsPage = new ProductsPage(driver, wait);
-    }
-
-    @AfterMethod
-    public void tearDown() {
-        if (driver != null) {
-            driver.quit();
-        }
-    }
+public class CheckoutTest extends BaseTest{
 
     // --- Helper: lleva desde Products hasta CheckoutShippingPage ---
     private CheckoutShippingPage navegarHastaShipping() {
