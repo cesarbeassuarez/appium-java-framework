@@ -29,6 +29,9 @@ public class BaseTest {
         options.setNewCommandTimeout(Duration.ofSeconds(120));
         options.setCapability("appium:appWaitActivity", "*");
 
+        options.setCapability("appium:chromedriverExecutable",
+                new File("../chromedriver-win64/chromedriver.exe").getAbsolutePath());
+
         driver = new AndroidDriver(new URL("http://127.0.0.1:4723"), options);
         wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         productsPage = new ProductsPage(driver, wait);

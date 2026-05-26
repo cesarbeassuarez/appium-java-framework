@@ -10,7 +10,7 @@ import java.time.Duration;
 
 import pages.QRScannerPage;
 import pages.GeoLocationPage;
-
+import pages.WebViewPage;
 
 public class ProductsPage extends BasePage {
 
@@ -157,5 +157,19 @@ public class ProductsPage extends BasePage {
                 AppiumBy.id("com.saucelabs.mydemoapp.android:id/locationTV")
         ));
         return new GeoLocationPage(driver, wait);
+    }
+
+    public WebViewPage irAWebView() {
+        abrirMenu();
+        driver.findElements(AppiumBy.id(MENU_ITEM_ID)).stream()
+                .filter(e -> e.getText().equals("WebView"))
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("No se encontró 'Webview' en el menú"))
+                .click();
+
+        wait.until(ExpectedConditions.visibilityOfElementLocated(
+                AppiumBy.id("com.saucelabs.mydemoapp.android:id/webViewTV")
+        ));
+        return new WebViewPage(driver, wait);
     }
 }
