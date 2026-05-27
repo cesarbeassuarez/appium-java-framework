@@ -47,8 +47,6 @@ public class ProductDetailPage extends BasePage {
         driver.findElement(AppiumBy.accessibilityId(color + " color")).click();
     }
 
-    // Reemplazá agregarAlCarrito() por estos dos métodos:
-
     public ProductDetailPage agregarAlCarrito() {
         driver.findElement(AppiumBy.accessibilityId(ADD_TO_CART_ACC)).click();
         return this;

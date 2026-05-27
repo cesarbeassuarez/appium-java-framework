@@ -12,6 +12,7 @@ public class LoginPage extends BasePage {
     private static final String PASSWORD_FIELD = "com.saucelabs.mydemoapp.android:id/passwordET";
     private static final String LOGIN_BUTTON = "Tap to login with given credentials";
     private static final String USERNAME_ERROR = "com.saucelabs.mydemoapp.android:id/nameErrorTV";
+    private static final String PASSWORD_ERROR = "com.saucelabs.mydemoapp.android:id/passwordErrorTV";
 
     public LoginPage(AndroidDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -50,5 +51,8 @@ public class LoginPage extends BasePage {
     }
     public String obtenerErrorUsername() {
         return driver.findElement(AppiumBy.id(USERNAME_ERROR)).getText();
+    }
+    public String obtenerErrorPassword() {
+        return driver.findElement(AppiumBy.id(PASSWORD_ERROR)).getText();
     }
 }
