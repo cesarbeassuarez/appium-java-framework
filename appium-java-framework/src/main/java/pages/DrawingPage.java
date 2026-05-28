@@ -2,6 +2,7 @@ package pages;
 
 import io.appium.java_client.AppiumBy;
 import io.appium.java_client.android.AndroidDriver;
+import io.qameta.allure.Step;
 import org.openqa.selenium.interactions.PointerInput;
 import org.openqa.selenium.interactions.Sequence;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -31,10 +32,12 @@ public class DrawingPage extends BasePage {
         super(driver, wait);
     }
 
+    @Step("Obtener título de Drawing")
     public String obtenerTitulo() {
         return driver.findElement(AppiumBy.id(TITLE)).getText();
     }
 
+    @Step("Dibujar trazo de ({startX},{startY}) a ({endX},{endY})")
     public void dibujar(int startX, int startY, int endX, int endY) {
         PointerInput finger = new PointerInput(PointerInput.Kind.TOUCH, "finger");
         Sequence trazo = new Sequence(finger, 1);
@@ -49,14 +52,17 @@ public class DrawingPage extends BasePage {
         driver.perform(Arrays.asList(trazo));
     }
 
+    @Step("Limpiar canvas")
     public void limpiarCanvas() {
         driver.findElement(AppiumBy.id(CLEAR_BTN)).click();
     }
 
+    @Step("Tap en Save")
     public void tapSave() {
         driver.findElement(AppiumBy.id(SAVE_BTN)).click();
     }
 
+    @Step("Aceptar permiso de almacenamiento")
     public void aceptarPermiso() {
         try {
             wait.until(ExpectedConditions.visibilityOfElementLocated(
@@ -67,22 +73,26 @@ public class DrawingPage extends BasePage {
         }
     }
 
+    @Step("Obtener mensaje de confirmación")
     public String obtenerMensajeConfirmacion() {
         return wait.until(ExpectedConditions.visibilityOfElementLocated(
                 AppiumBy.id(ALERT_MESSAGE)
         )).getText();
     }
 
+    @Step("Obtener título de alerta")
     public String obtenerTituloAlerta() {
         return wait.until(ExpectedConditions.visibilityOfElementLocated(
                 AppiumBy.id(ALERT_TITLE)
         )).getText();
     }
 
+    @Step("Cerrar alerta")
     public void cerrarAlerta() {
         driver.findElement(AppiumBy.id(ALERT_OK)).click();
     }
 
+    @Step("Guardar dibujo y obtener mensaje")
     public String guardarYObtenerMensaje() {
         tapSave();
         String mensaje = obtenerMensajeConfirmacion();

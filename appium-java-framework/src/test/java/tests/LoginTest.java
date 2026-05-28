@@ -73,4 +73,15 @@ public class LoginTest extends BaseTest {
         ProductsPage resultado = loginPage.tapLogin();
         Assert.assertEquals(resultado.obtenerTitulo(), "Products");
     }
+
+    @Test
+    public void verificarTituloIncorrecto_falloIntencional() {
+        LoginPage loginPage = productsPage.irAlLogin();
+        loginPage.ingresarCredenciales("[email protected]", "10203040");
+        loginPage.tapLogin();
+
+        // Assertion que falla a propósito
+        Assert.assertEquals(productsPage.obtenerTitulo(), "Texto Incorrecto",
+                "Fallo intencional para probar screenshot en Allure");
+    }
 }

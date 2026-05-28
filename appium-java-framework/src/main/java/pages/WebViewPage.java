@@ -2,6 +2,7 @@ package pages;
 
 import io.appium.java_client.AppiumBy;
 import io.appium.java_client.android.AndroidDriver;
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -23,12 +24,14 @@ public class WebViewPage extends BasePage {
         super(driver, wait);
     }
 
+    @Step("Obtener título de WebView")
     public String obtenerTitulo() {
         return wait.until(ExpectedConditions.visibilityOfElementLocated(
                 AppiumBy.id(TITLE)
         )).getText();
     }
 
+    @Step("Cargar URL: {url}")
     public void cargarUrl(String url) {
         var campo = wait.until(ExpectedConditions.visibilityOfElementLocated(
                 AppiumBy.id(URL_INPUT)
@@ -41,29 +44,35 @@ public class WebViewPage extends BasePage {
         )).click();
     }
 
+    @Step("Obtener contextos disponibles")
     public Set<String> obtenerContextos() {
         return driver.getContextHandles();
     }
 
+    @Step("Cambiar a contexto WebView")
     public void cambiarAWebView() {
         wait.until(d -> driver.getContextHandles().size() > 1);
         driver.context(WEBVIEW_CONTEXT);
     }
 
+    @Step("Cambiar a contexto Nativo")
     public void cambiarANativo() {
         driver.context(NATIVE_CONTEXT);
     }
 
+    @Step("Obtener contexto actual")
     public String obtenerContextoActual() {
         return driver.getContext();
     }
 
     // --- Métodos en contexto WEBVIEW (locators web) ---
 
+    @Step("Obtener título de la página web")
     public String obtenerTituloWeb() {
         return driver.getTitle();
     }
 
+    @Step("Login en web con usuario: {username}")
     public void loginEnWeb(String username, String password) {
         wait.until(ExpectedConditions.visibilityOfElementLocated(
                 By.id("user-name")
@@ -73,12 +82,14 @@ public class WebViewPage extends BasePage {
         driver.findElement(By.id("login-button")).click();
     }
 
+    @Step("Obtener error de login web")
     public String obtenerErrorLoginWeb() {
         return wait.until(ExpectedConditions.visibilityOfElementLocated(
                 By.cssSelector("[data-test='error']")
         )).getText();
     }
 
+    @Step("Verificar si está en inventario")
     public boolean estaEnInventario() {
         try {
             wait.until(ExpectedConditions.visibilityOfElementLocated(

@@ -2,6 +2,7 @@ package pages;
 
 import io.appium.java_client.AppiumBy;
 import io.appium.java_client.android.AndroidDriver;
+import io.qameta.allure.Step;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -21,7 +22,6 @@ public class ProductsPage extends BasePage {
 
     private static final String MENU_ITEM_ID = "com.saucelabs.mydemoapp.android:id/itemTV";
 
-    // Constante para el botón de permiso "Mientras la app está en uso"
     private static final String PERMISO_ALLOW = "com.android.permissioncontroller:id/permission_allow_foreground_only_button";
     private static final String PERMISO_DENY = "com.android.permissioncontroller:id/permission_deny_button";
 
@@ -30,6 +30,7 @@ public class ProductsPage extends BasePage {
         super(driver, wait);
     }
 
+    @Step("Obtener título de Products")
     public String obtenerTitulo() {
         wait.until(ExpectedConditions.visibilityOfElementLocated(
                 AppiumBy.accessibilityId(TITULO)
@@ -37,6 +38,7 @@ public class ProductsPage extends BasePage {
         return driver.findElement(AppiumBy.accessibilityId(TITULO)).getText();
     }
 
+    @Step("Navegar al Login desde menú")
     public LoginPage irAlLogin() {
         driver.findElement(AppiumBy.accessibilityId(MENU_HAMBURGUESA)).click();
         wait.until(ExpectedConditions.visibilityOfElementLocated(
@@ -49,6 +51,7 @@ public class ProductsPage extends BasePage {
         return new LoginPage(driver, wait);
     }
 
+    @Step("Scroll hasta producto: {nombreProducto}")
     public void scrollHastaProducto(String nombreProducto) {
         driver.findElement(AppiumBy.androidUIAutomator(
                 "new UiScrollable(new UiSelector().scrollable(true))" +
@@ -56,14 +59,15 @@ public class ProductsPage extends BasePage {
         ));
     }
 
+    @Step("Obtener texto del producto: {nombreProducto}")
     public String obtenerTextoProducto(String nombreProducto) {
         return driver.findElement(AppiumBy.androidUIAutomator(
                 "new UiSelector().text(\"" + nombreProducto + "\")"
         )).getText();
     }
 
+    @Step("Seleccionar producto: {nombreProducto}")
     public ProductDetailPage seleccionarProducto(String nombreProducto) {
-        // Scroll hasta el producto
         wait.until(ExpectedConditions.visibilityOfElementLocated(
                 AppiumBy.androidUIAutomator(
                         "new UiScrollable(new UiSelector().scrollable(true))" +
@@ -71,14 +75,12 @@ public class ProductsPage extends BasePage {
                 )
         ));
 
-        // Click en la imagen del producto (el texto no es clickable)
         driver.findElement(AppiumBy.xpath(
                 "//android.widget.TextView[@text='" + nombreProducto + "']" +
                         "/parent::android.view.ViewGroup" +
                         "/android.widget.ImageView[@content-desc='Product Image']"
         )).click();
 
-        // Esperar a que cargue Product Detail
         wait.until(ExpectedConditions.visibilityOfElementLocated(
                 AppiumBy.accessibilityId("Tap to add product to cart")
         ));
@@ -86,7 +88,7 @@ public class ProductsPage extends BasePage {
         return new ProductDetailPage(driver, wait);
     }
 
-
+    @Step("Abrir menú hamburguesa")
     public void abrirMenu() {
         driver.findElement(AppiumBy.accessibilityId(MENU_HAMBURGUESA)).click();
         wait.until(ExpectedConditions.visibilityOfElementLocated(
@@ -94,6 +96,7 @@ public class ProductsPage extends BasePage {
         ));
     }
 
+    @Step("Navegar a Drawing")
     public DrawingPage irADrawing() {
         abrirMenu();
         driver.findElements(AppiumBy.id(MENU_ITEM_ID)).stream()
@@ -102,7 +105,6 @@ public class ProductsPage extends BasePage {
                 .orElseThrow(() -> new RuntimeException("No se encontró 'Drawing' en el menú"))
                 .click();
 
-        // irADrawing — prueba ambos ids
         manejarPermiso(PERMISO_ALLOW, "com.android.permissioncontroller:id/permission_allow_button");
 
         wait.until(ExpectedConditions.visibilityOfElementLocated(
@@ -111,6 +113,7 @@ public class ProductsPage extends BasePage {
         return new DrawingPage(driver, wait);
     }
 
+    @Step("Navegar a QR Scanner")
     public QRScannerPage irAQRScanner() {
         abrirMenu();
         driver.findElements(AppiumBy.id(MENU_ITEM_ID)).stream()
@@ -127,6 +130,7 @@ public class ProductsPage extends BasePage {
         return new QRScannerPage(driver, wait);
     }
 
+    @Step("Navegar a QR Scanner (denegando permiso)")
     public QRScannerPage irAQRScannerDenegando() {
         abrirMenu();
         driver.findElements(AppiumBy.id(MENU_ITEM_ID)).stream()
@@ -143,6 +147,7 @@ public class ProductsPage extends BasePage {
         return new QRScannerPage(driver, wait);
     }
 
+    @Step("Navegar a Geo Location")
     public GeoLocationPage irAGeoLocation() {
         abrirMenu();
         driver.findElements(AppiumBy.id(MENU_ITEM_ID)).stream()
@@ -159,6 +164,7 @@ public class ProductsPage extends BasePage {
         return new GeoLocationPage(driver, wait);
     }
 
+    @Step("Navegar a WebView")
     public WebViewPage irAWebView() {
         abrirMenu();
         driver.findElements(AppiumBy.id(MENU_ITEM_ID)).stream()

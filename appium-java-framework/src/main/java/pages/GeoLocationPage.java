@@ -2,6 +2,7 @@ package pages;
 
 import io.appium.java_client.AppiumBy;
 import io.appium.java_client.android.AndroidDriver;
+import io.qameta.allure.Step;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -20,30 +21,35 @@ public class GeoLocationPage extends BasePage {
         super(driver, wait);
     }
 
+    @Step("Obtener título de Geo Location")
     public String obtenerTitulo() {
         return wait.until(ExpectedConditions.visibilityOfElementLocated(
                 AppiumBy.id(TITLE)
         )).getText();
     }
 
+    @Step("Obtener latitud")
     public String obtenerLatitud() {
         return wait.until(ExpectedConditions.visibilityOfElementLocated(
                 AppiumBy.id(LATITUDE_TV)
         )).getText();
     }
 
+    @Step("Obtener longitud")
     public String obtenerLongitud() {
         return wait.until(ExpectedConditions.visibilityOfElementLocated(
                 AppiumBy.id(LONGITUDE_TV)
         )).getText();
     }
 
+    @Step("Tap en Start Observing")
     public void tapStartObserving() {
         wait.until(ExpectedConditions.elementToBeClickable(
                 AppiumBy.id(START_BTN)
         )).click();
     }
 
+    @Step("Tap en Stop Observing")
     public void tapStopObserving() {
         wait.until(ExpectedConditions.elementToBeClickable(
                 AppiumBy.id(STOP_BTN)

@@ -13,6 +13,13 @@ import java.io.File;
 import java.net.URL;
 import java.time.Duration;
 
+import org.testng.annotations.Listeners;
+
+import io.qameta.allure.Allure;
+import org.openqa.selenium.OutputType;
+import org.testng.ITestResult;
+
+@Listeners(AllureListener.class)
 public class BaseTest {
 
     protected AndroidDriver driver;
@@ -42,7 +49,13 @@ public class BaseTest {
     }
 
     @AfterMethod
-    public void tearDown() {
+    public void tearDown(ITestResult result) {
+        if (result.getStatus() == ITestResult.FAILURE && driver != null) {
+            Allure.getLifecycle().addAttachment(
+                    "Screenshot on failure", "image/png", ".png",
+                    driver.getScreenshotAs(OutputType.BYTES)
+            );
+        }
         if (driver != null) {
             driver.quit();
         }

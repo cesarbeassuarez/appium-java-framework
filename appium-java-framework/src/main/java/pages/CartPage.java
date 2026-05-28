@@ -2,6 +2,7 @@ package pages;
 
 import io.appium.java_client.AppiumBy;
 import io.appium.java_client.android.AndroidDriver;
+import io.qameta.allure.Step;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -21,32 +22,39 @@ public class CartPage extends BasePage {
         super(driver, wait);
     }
 
+    @Step("Obtener título del carrito")
     public String obtenerTitulo() {
         return wait.until(ExpectedConditions.visibilityOfElementLocated(
                 AppiumBy.id(TITLE)
         )).getText();
     }
 
+    @Step("Obtener nombre del producto en carrito")
     public String obtenerNombreProducto() {
         return driver.findElement(AppiumBy.id(ITEM_NAME)).getText();
     }
 
+    @Step("Obtener precio del producto en carrito")
     public String obtenerPrecioProducto() {
         return driver.findElement(AppiumBy.id(ITEM_PRICE)).getText();
     }
 
+    @Step("Obtener cantidad del producto")
     public String obtenerCantidad() {
         return driver.findElement(AppiumBy.id(ITEM_QUANTITY)).getText();
     }
 
+    @Step("Obtener total de items")
     public String obtenerTotalItems() {
         return driver.findElement(AppiumBy.id(TOTAL_ITEMS)).getText();
     }
 
+    @Step("Obtener precio total")
     public String obtenerTotalPrecio() {
         return driver.findElement(AppiumBy.id(TOTAL_PRICE)).getText();
     }
 
+    @Step("Eliminar producto del carrito")
     public CartPage eliminarProducto() {
         driver.findElement(AppiumBy.accessibilityId(REMOVE_ITEM_ACC)).click();
         return this;
@@ -54,12 +62,14 @@ public class CartPage extends BasePage {
 
     private static final String NO_ITEMS_TITLE = "com.saucelabs.mydemoapp.android:id/noItemTitleTV";
 
+    @Step("Obtener título de carrito vacío")
     public String obtenerTituloCarritoVacio() {
         return wait.until(ExpectedConditions.visibilityOfElementLocated(
                 AppiumBy.id(NO_ITEMS_TITLE)
         )).getText();
     }
 
+    @Step("Proceed to Checkout")
     public CheckoutShippingPage proceedToCheckout() {
         driver.findElement(AppiumBy.accessibilityId(PROCEED_CHECKOUT_ACC)).click();
         wait.until(ExpectedConditions.visibilityOfElementLocated(

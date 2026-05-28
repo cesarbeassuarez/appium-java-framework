@@ -2,6 +2,7 @@ package pages;
 
 import io.appium.java_client.AppiumBy;
 import io.appium.java_client.android.AndroidDriver;
+import io.qameta.allure.Step;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -18,26 +19,32 @@ public class LoginPage extends BasePage {
         super(driver, wait);
     }
 
+    @Step("Ingresar username: {username}")
     public LoginPage ingresarUsername(String username) {
         driver.findElement(AppiumBy.id(USERNAME_FIELD)).sendKeys(username);
         return this;
     }
 
+    @Step("Ingresar password: {password}")
     public LoginPage ingresarPassword(String password) {
         driver.findElement(AppiumBy.id(PASSWORD_FIELD)).sendKeys(password);
         return this;
     }
 
+    @Step("Limpiar campo username")
     public LoginPage limpiarUsername() {
         driver.findElement(AppiumBy.id(USERNAME_FIELD)).clear();
         return this;
     }
 
+    @Step("Ingresar credenciales: {username} / {password}")
     public LoginPage ingresarCredenciales(String username, String password) {
         ingresarUsername(username);
         ingresarPassword(password);
         return this;
     }
+
+    @Step("Tap en Login (esperando Products)")
     public ProductsPage tapLogin() {
         driver.findElement(AppiumBy.accessibilityId(LOGIN_BUTTON)).click();
         wait.until(ExpectedConditions.visibilityOfElementLocated(
@@ -45,13 +52,19 @@ public class LoginPage extends BasePage {
         ));
         return new ProductsPage(driver, wait);
     }
+
+    @Step("Tap en Login (esperando error)")
     public LoginPage tapLoginEsperandoError() {
         driver.findElement(AppiumBy.accessibilityId(LOGIN_BUTTON)).click();
         return this;
     }
+
+    @Step("Obtener error de username")
     public String obtenerErrorUsername() {
         return driver.findElement(AppiumBy.id(USERNAME_ERROR)).getText();
     }
+
+    @Step("Obtener error de password")
     public String obtenerErrorPassword() {
         return driver.findElement(AppiumBy.id(PASSWORD_ERROR)).getText();
     }

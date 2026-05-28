@@ -2,6 +2,7 @@ package pages;
 
 import io.appium.java_client.AppiumBy;
 import io.appium.java_client.android.AndroidDriver;
+import io.qameta.allure.Step;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -20,6 +21,7 @@ public class BasePage {
         this.wait = wait;
     }
 
+    @Step("Swipe de ({startX},{startY}) a ({endX},{endY})")
     public void swipe(int startX, int startY, int endX, int endY, int durationMs) {
         PointerInput finger = new PointerInput(PointerInput.Kind.TOUCH, "finger");
         Sequence swipe = new Sequence(finger, 1);
@@ -34,11 +36,7 @@ public class BasePage {
         driver.perform(Arrays.asList(swipe));
     }
 
-    /**
-     * Maneja diálogo de permisos del sistema Android.
-     * Si el diálogo aparece, toca el botón indicado.
-     * Si no aparece (permiso ya otorgado), continúa sin error.
-     */
+    @Step("Manejar diálogo de permisos")
     public void manejarPermiso(String... botonesPermiso) {
         WebDriverWait shortWait = new WebDriverWait(driver, Duration.ofSeconds(3));
         for (String boton : botonesPermiso) {
