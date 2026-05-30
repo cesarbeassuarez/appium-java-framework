@@ -29,15 +29,24 @@ public class BaseTest {
     @BeforeMethod
     public void setUp() throws Exception {
         UiAutomator2Options options = new UiAutomator2Options();
-        options.setUdid("ZY32FJFXNF");
-        options.setApp(new File("apk/mda-2.2.0-25.apk").getAbsolutePath());
+
+        // Configurable: local usa tu celular, CI usa emulador
+        String udid = System.getProperty("udid", "ZY32FJFXNF");
+        String appPath = System.getProperty("appPath", "apk/mda-2.2.0-25.apk");
+
+        options.setUdid(udid);
+        options.setApp(new File(appPath).getAbsolutePath());
         options.setCapability("appium:autoGrantPermissions", false);
         options.setAutomationName("UiAutomator2");
         options.setNewCommandTimeout(Duration.ofSeconds(120));
         options.setCapability("appium:appWaitActivity", "*");
 
-        options.setCapability("appium:chromedriverExecutable",
-                new File("../chromedriver-win64/chromedriver.exe").getAbsolutePath());
+        // ChromeDriver solo si se especifica (local Windows)
+        String chromedriverPath = System.getProperty("chromedriverPath");
+        if (chromedriverPath != null) {
+            options.setCapability("appium:chromedriverExecutable",
+                    new File(chromedriverPath).getAbsolutePath());
+        }
 
         driver = new AndroidDriver(new URL("http://127.0.0.1:4723"), options);
         wait = new WebDriverWait(driver, Duration.ofSeconds(10));
