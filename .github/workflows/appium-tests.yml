@@ -10,6 +10,8 @@ jobs:
   test:
     runs-on: ubuntu-latest
     timeout-minutes: 45
+    permissions:
+      contents: write
 
     steps:
       - name: Checkout
@@ -42,9 +44,7 @@ jobs:
           api-level: 30
           arch: x86_64
           emulator-options: -no-window -no-audio -no-snapshot
-          script: |
-            cd appium-java-framework
-            mvn clean test "-Dudid=emulator-5554"
+          script: cd appium-java-framework && mvn clean test "-Dudid=emulator-5554"
 
       - name: Upload allure-results
         if: always()
