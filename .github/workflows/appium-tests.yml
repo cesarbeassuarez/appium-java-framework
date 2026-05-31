@@ -10,7 +10,7 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 60
     permissions:
       contents: write
 
@@ -45,6 +45,7 @@ jobs:
         with:
           api-level: 30
           arch: x86_64
+          profile: pixel_6
           emulator-options: -no-window -no-audio -no-snapshot
           emulator-boot-timeout: 600
           script: |
