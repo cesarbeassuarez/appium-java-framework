@@ -41,6 +41,14 @@ public class BaseTest {
         options.setNewCommandTimeout(Duration.ofSeconds(120));
         options.setCapability("appium:appWaitActivity", "*");
 
+        // Timeouts más altos para CI (emulador lento)
+        int serverInstallTimeout = Integer.parseInt(
+                System.getProperty("serverInstallTimeout", "60000"));
+        int serverLaunchTimeout = Integer.parseInt(
+                System.getProperty("serverLaunchTimeout", "60000"));
+        options.setCapability("appium:uiautomator2ServerInstallTimeout", serverInstallTimeout);
+        options.setCapability("appium:uiautomator2ServerLaunchTimeout", serverLaunchTimeout);
+
         // ChromeDriver solo si se especifica (local Windows)
         String chromedriverPath = System.getProperty("chromedriverPath");
         if (chromedriverPath != null) {
