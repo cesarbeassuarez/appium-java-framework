@@ -49,7 +49,8 @@ public class BaseTest {
         }
 
         driver = new AndroidDriver(new URL("http://127.0.0.1:4723"), options);
-        wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        int waitTimeout = Integer.parseInt(System.getProperty("waitTimeout", "10"));
+        wait = new WebDriverWait(driver, Duration.ofSeconds(waitTimeout));
         productsPage = new ProductsPage(driver, wait);
 
         wait.until(ExpectedConditions.visibilityOfElementLocated(
